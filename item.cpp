@@ -1,13 +1,10 @@
 #include <iostream>
 #include <cstring>
-#include <map>
-#include <vector>
-#include "room.h"
 #include "item.h"
+#include "room.h"
 
 using namespace std;
 
-room::room(){
-
+item::item(){
 
 }
