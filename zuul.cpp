@@ -12,7 +12,7 @@ int main(){
   vector<item*> inventory;
   char input[20];
   cout << "You are trapped in area 51. Find all 5 items within 40 rounds or the government finds you." << endl;
-  cout << "your commands are a direction, pick, drop, or quit" << endl;
+  cout << "your commands are a exit, pick, drop, or quit" << endl;
   cout << endl;
   room* current_room;
   
@@ -37,6 +37,15 @@ int main(){
       cout << "bye!" << endl;
       return 0;
     } //then other commands
+    else if(strcmp("exit", input)==0){
+      //exit
+    }
+    else if(strcmp("drop", input)==0){
+      //drop
+    }
+    else if(strcmp("pick", input)==0){
+      //pick
+    }
     else{
       cout << "invalid command! try again!" << endl;
     }
