@@ -14,10 +14,9 @@ public:
   room();
   char name[80];
   char description[80];
-  vector<item> items;
+  vector<item*> items;
   //map of exits
-  //getExits
-  
+  map<char*, room*> exits; //direction and room
 };
 
 #endif

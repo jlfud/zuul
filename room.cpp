@@ -8,6 +8,5 @@
 using namespace std;
 
 room::room(){
-
-
+  
 }
