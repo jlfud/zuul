@@ -16,7 +16,7 @@ public:
   char description[80];
   vector<item*> items;
   //map of exits
-  map<char*, room*> exits; //direction and room
+  map<const char*, room*> exits; //direction and room
 };
 
 #endif
