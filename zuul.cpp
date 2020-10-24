@@ -12,7 +12,7 @@ int main(){
   vector<item*> inventory;
   char input[20];
   cout << "You are trapped in area 51. Find all 5 items within 40 rounds or the government finds you." << endl;
-  cout << "your commands are a exit, pick, drop, or quit" << endl;
+  cout << "your commands are a go, pick, drop, or quit" << endl;
   cout << endl;
   room* current_room = new room();
   
@@ -42,6 +42,9 @@ int main(){
   room* kitchen = new room();
   strcpy(kitchen->name, "kitchen");
   strcpy(kitchen->description, "hungry?");
+  room* trump = new room();
+  strcpy(trump->name, "trump's room");
+  strcpy(trump->description, "zuul part 2 white house edition?");
   room* lab = new room();
   strcpy(lab->name, "computer lab");
   strcpy(lab->description, "can you program your way out?");
@@ -65,12 +68,47 @@ int main(){
   strcpy(alienroom->description, "just like the memes");
 
   bedroom->exits.insert(pair<const char*, room*>("west", lab));
+  bedroom->exits.insert(pair<const char*, room*>("north", barracks));
+  bedroom->exits.insert(pair<const char*, room*>("south", lounge));
+  bedroom->exits.insert(pair<const char*, room*>("east", pettingzoo));
+  pettingzoo->exits.insert(pair<const char*, room*>("west", bedroom));
+  pettingzoo->exits.insert(pair<const char*, room*>("east", library));
+  pettingzoo->exits.insert(pair<const char*, room*>("north", weaponroom));
+  library->exits.insert(pair<const char*, room*>("south", pokemonroom));
+  library->exits.insert(pair<const char*, room*>("west", pettingzoo));
+  pokemonroom->exits.insert(pair<const char*, room*>("north", library));
+  weaponroom->exits.insert(pair<const char*, room*>("south", pettingzoo));
+  weaponroom->exits.insert(pair<const char*, room*>("west", barracks));
+  weaponroom->exits.insert(pair<const char*, room*>("north", alienroom));
+  barracks->exits.insert(pair<const char*, room*>("south", bedroom));
+  barracks->exits.insert(pair<const char*, room*>("east", weaponroom));
+  alienroom->exits.insert(pair<const char*, room*>("south", weaponroom));
+  lounge->exits.insert(pair<const char*, room*>("north", bedroom));
+  lounge->exits.insert(pair<const char*, room*>("east", daycare));
+  lounge->exits.insert(pair<const char*, room*>("south", coffeehouse));
+  daycare->exits.insert(pair<const char*, room*>("west", lounge));
+  coffeehouse->exits.insert(pair<const char*, room*>("north", lounge));
+  lab->exits.insert(pair<const char*, room*>("north", bar));
+  lab->exits.insert(pair<const char*, room*>("east", bedroom));
+  lab->exits.insert(pair<const char*, room*>("south", kitchen));
+  kitchen->exits.insert(pair<const char*, room*>("north", lab));
+  trump->exits.insert(pair<const char*, room*>("east", kitchen));
+  bar->exits.insert(pair<const char*, room*>("north", storage));
+  bar->exits.insert(pair<const char*, room*>("west", missilesilo));
+  bar->exits.insert(pair<const char*, room*>("south", lab));
+  missilesilo->exits.insert(pair<const char*, room*>("east", bar));
+  storage->exits.insert(pair<const char*, room*>("south", bar));
+
   for(int z = 0; z < 40; z++){
     cout << "you are in room " << current_room->name << endl; //describe room
     cout << current_room->description << endl; 
     cout << endl;
     cout << "the exits are: " << endl;
-    //print exits
+    map<const char*, room*>::iterator it;
+    for(it = current_room->exits.begin(); it != current_room->exits.end(); ++it){
+      cout << it->first << ", ";
+    }
+    cout << endl;
     cout << "the items are: " << endl;
     //print items
     cout << "input a command: " << endl;
@@ -80,18 +118,15 @@ int main(){
       cout << "bye!" << endl;
       return 0;
     } //then other commands
-    else if(strcmp("exit", input)==0){
+    else if(strcmp("go", input)==0){
       cout << "which way would you like to go?" << endl;
-      while(true){
-	cin >> input;
-	map<const char*, room*>::iterator it;
-	for(it = current_room->exits.begin(); it != current_room->exits.end(); ++it){
-	  if(strcmp(it->first, input) == 0){
-	    current_room = it->second;
-	    break;
-	  }
-	}
-	break;
+      cin >> input;
+      map<const char*, room*>::iterator it;
+      for(it = current_room->exits.begin(); it != current_room->exits.end(); ++it){
+	if(strcmp(it->first, input) == 0){
+	  current_room = it->second;
+	  break;
+	 }
       }
     }
     else if(strcmp("drop", input)==0){
