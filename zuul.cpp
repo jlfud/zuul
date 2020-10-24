@@ -66,6 +66,21 @@ int main(){
   room* alienroom = new room();
   strcpy(alienroom->name, "alien room");
   strcpy(alienroom->description, "just like the memes");
+  item* pillow = new item();
+  strcpy(pillow->name, "pillow");
+  bedroom->items.push_back(pillow);
+  item* pokeball = new item();
+  strcpy(pokeball->name, "pokeball");
+  pokemonroom->items.push_back(pokeball);
+  item* beer = new item();
+  strcpy(beer->name, "beer");
+  bar->items.push_back(beer);
+  item* child = new item();
+  strcpy(child->name, "child");
+  daycare->items.push_back(child);
+  item* watergun = new item();
+  strcpy(watergun->name, "water gun");
+  weaponroom->items.push_back(watergun);
 
   bedroom->exits.insert(pair<const char*, room*>("west", lab));
   bedroom->exits.insert(pair<const char*, room*>("north", barracks));
@@ -100,6 +115,7 @@ int main(){
   storage->exits.insert(pair<const char*, room*>("south", bar));
 
   for(int z = 0; z < 40; z++){
+    cout << "------round " << (z+1) << "---------" << endl;
     cout << "you are in room " << current_room->name << endl; //describe room
     cout << current_room->description << endl; 
     cout << endl;
@@ -110,7 +126,15 @@ int main(){
     }
     cout << endl;
     cout << "the items are: " << endl;
-    //print items
+    for(vector<item*>::iterator it = current_room->items.begin(); it != current_room->items.end(); it++){
+      cout << (*it)->name << ", ";
+    }
+    cout << endl;
+    cout << "in your inventory: " << endl;
+    for(vector<item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
+      cout << (*it)->name << ", ";
+    }
+    cout << endl;
     cout << "input a command: " << endl;
     cin >> input;
     
@@ -130,10 +154,28 @@ int main(){
       }
     }
     else if(strcmp("drop", input)==0){
-      //drop
+       for(vector<item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
+	 cout << "drop " << (*it)->name << "?";
+	 cin >> input;
+	 if(strcmp(input, "yes")==0){
+	   item* i = (*it);
+	   it = inventory.erase(it);
+	   current_room->items.push_back(i);
+	   break;
+	 }
+       }
     }
     else if(strcmp("pick", input)==0){
-      //pick
+      for(vector<item*>::iterator it = current_room->items.begin(); it != current_room->items.end(); it++){
+        cout << "pick up " << (*it)->name << "?" << endl;
+	cin >> input;
+	if(strcmp(input, "yes")==0){
+	  item* i = (*it);
+	  it = current_room->items.erase(it);
+	  inventory.push_back(i);
+	  break;
+	}
+      }
     }
     else{
       cout << "invalid command! try again!" << endl;
@@ -144,6 +186,7 @@ int main(){
       cout << "you have all five items! You win!" << endl;
       return 0; 
     }
+    cout << "---------------------------------" << endl;
     cout << endl;
   }
   cout << "the government finds you! you lose!" << endl;
