@@ -5,17 +5,18 @@
 #include <iterator>
 #include "room.h"
 #include "item.h"
-
+//imports (above)
 using namespace std;
 
 int main(){
-  vector<item*> inventory;
+  vector<item*> inventory; //user's items
   char input[20];
   cout << "You are trapped in area 51. Find all 5 items within 40 rounds or the government finds you." << endl;
   cout << "your commands are a go, pick, drop, or quit" << endl;
   cout << endl;
+  //what room are we in?
   room* current_room = new room();
-  
+  //initialize all the rooms, exits, and items
   room* bedroom = new room();
   strcpy(bedroom->name, "bedroom");
   strcpy(bedroom->description, "what a putrid bedroom");  
@@ -114,9 +115,9 @@ int main(){
   missilesilo->exits.insert(pair<const char*, room*>("east", bar));
   storage->exits.insert(pair<const char*, room*>("south", bar));
 
-  for(int z = 0; z < 40; z++){
+  for(int z = 0; z < 40; z++){ //game loop
     cout << "------round " << (z+1) << "---------" << endl;
-    cout << "you are in room " << current_room->name << endl; //describe room
+    cout << "you are in room " << current_room->name << endl; //describe room, items, and exits
     cout << current_room->description << endl; 
     cout << endl;
     cout << "the exits are: " << endl;
@@ -130,22 +131,22 @@ int main(){
       cout << (*it)->name << ", ";
     }
     cout << endl;
-    cout << "in your inventory: " << endl;
+    cout << "in your inventory: " << endl; //in inventory
     for(vector<item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
       cout << (*it)->name << ", ";
     }
     cout << endl;
     cout << "input a command: " << endl;
-    cin >> input;
+    cin >> input; //get input
     
-    if(strcmp("quit", input)==0){
+    if(strcmp("quit", input)==0){ //a way to quit
       cout << "bye!" << endl;
       return 0;
     } //then other commands
     else if(strcmp("go", input)==0){
       cout << "which way would you like to go?" << endl;
       cin >> input;
-      map<const char*, room*>::iterator it;
+      map<const char*, room*>::iterator it; //go in a direction to a room
       for(it = current_room->exits.begin(); it != current_room->exits.end(); ++it){
 	if(strcmp(it->first, input) == 0){
 	  current_room = it->second;
@@ -153,7 +154,7 @@ int main(){
 	 }
       }
     }
-    else if(strcmp("drop", input)==0){
+    else if(strcmp("drop", input)==0){ //remove an item from inventory and add to room
        for(vector<item*>::iterator it = inventory.begin(); it != inventory.end(); it++){
 	 cout << "drop " << (*it)->name << "?";
 	 cin >> input;
@@ -165,7 +166,7 @@ int main(){
 	 }
        }
     }
-    else if(strcmp("pick", input)==0){
+    else if(strcmp("pick", input)==0){//remove an item from room and add to inventory
       for(vector<item*>::iterator it = current_room->items.begin(); it != current_room->items.end(); it++){
         cout << "pick up " << (*it)->name << "?" << endl;
 	cin >> input;
@@ -189,6 +190,7 @@ int main(){
     cout << "---------------------------------" << endl;
     cout << endl;
   }
+  //if 40 rounds have passed, game ends
   cout << "the government finds you! you lose!" << endl;
   return 0;
 }
